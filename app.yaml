@@ -1,0 +1,22 @@
+runtime: nodejs22  # ou a versão que você estiver usando
+env: standard
+
+instance_class: F2  # Defina a classe de instância conforme necessário
+
+entrypoint: node index.js  # ou o nome do seu arquivo principal
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5 
+
+handlers:
+  - url: /static
+    static_dir: public  # Remova se não tiver arquivos estáticos
+  - url: /.*
+    script: auto  # Roteia todas as outras requisições para o servidor Node.js
+
+env_variables:
+  INSTANCE_CONNECTION_NAME: local-turbine-441617-q5:us-central1:projeto193mobile
+  DB_USER: "seu-usuario"
+  DB_PASSWORD: "sua-senha"
+  DB_NAME: "nome-do-banco"
