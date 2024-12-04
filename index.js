@@ -26,7 +26,6 @@ app.get("/", (req, res) => {
   res.send("Bem-vindo ao servidor do 193Mobile! Use as rotas da API iniciando com /api");
 });
   
-// Inicia o servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT} no ambiente ${process.env.NODE_ENV || 'desenvolvimento'}`);
 });

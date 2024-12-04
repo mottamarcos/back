@@ -31,5 +31,8 @@
     "mysql2": "^3.11.4",
     "nodemailer": "^6.9.16",
     "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9"
   }
 }
