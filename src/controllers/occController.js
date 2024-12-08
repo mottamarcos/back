@@ -1,4 +1,5 @@
 const db = require('../config/db');
+const { createNotification } = require("../controllers/nfController");
 
 const getOccurrencesOpened = async (req, res) => {
   const { id } = req.params;
@@ -64,6 +65,15 @@ const createOccurrence = async (req, res) => {
           localizacao,
         }
       });
+
+      await createNotification(
+        'Aberta', 
+        usuario_id, 
+        ocorrencia_id,
+        'Status da Ocorrência',
+        `Ocorrência aberta, aguardando a sala de operações`,
+      );
+
     } else {
       res.status(500).json({ success: false, message: 'Falha ao criar a ocorrência.' });
     }
@@ -99,6 +109,14 @@ const updateStatus = async (req, res) => {
        SET status=?
        WHERE ocorrencia_id=?`,
       [status, ocorrencia_id]
+    );
+
+    await createNotification(
+      status, 
+      rows[0].usuario_id, 
+      rows[0].ocorrencia_id,
+      'Status da Ocorrência',
+      `Sua ocorrência está ${status}`,
     );
 
     res.status(200).json({ message: "Usuário atualizado com sucesso!" });

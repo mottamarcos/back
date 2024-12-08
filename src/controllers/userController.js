@@ -23,7 +23,6 @@ const getUserById = (req, res) => {
 const registerUser = async (req, res) => {
   const { nome, email, senha, telefone, tipo_usuario } = req.body;
 
-  // Verificar se todos os campos obrigatórios foram preenchidos
   if (!nome || !email || !senha || !tipo_usuario) {
     return res.status(400).json({ message: "Preencha todos os campos obrigatórios!" });
   }
@@ -32,21 +31,21 @@ const registerUser = async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
-    // Inserir o novo usuário no banco de dados
     await db.query(
       "INSERT INTO Usuario (nome, email, senha, telefone, tipo_usuario) VALUES (?, ?, ?, ?, ?)",
       [nome, email, hashedPassword, telefone || null, tipo_usuario]
     );
 
-    res.status(201).json({ message: "Usuário registrado com sucesso!" });
+    res.status(201).json({ success: true, message: "Usuário registrado com sucesso!" });
   } catch (error) {
     console.error("Erro no registro:", error);
     if (error.code === "ER_DUP_ENTRY") {
-      return res.status(400).json({ message: "Email já está em uso!" });
+      return res.status(400).json({ success: false, message: "Email já está em uso!" });
     }
-    return res.status(500).json({ message: "Erro interno no servidor." });
+    return res.status(500).json({ success: false, message: "Erro interno no servidor." });
   }
 };
+
 
 //Lógica de alteração
 const updateUser = async (req, res) => {
